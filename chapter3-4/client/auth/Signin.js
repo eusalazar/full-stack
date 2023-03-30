@@ -63,6 +63,10 @@ export default function Signin(props) {  //inicio de sesion
         })
         }
 
+        const handleChange = name => event => {
+            setValues({ ...values, [name]: event.target.value })
+        }
+
         const {from} = props.location.state || {
             from: {
                 pathname: '/'

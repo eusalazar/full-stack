@@ -28,7 +28,7 @@ const list = async (signal) => {   //recupera todos los usuarios de la BD
 
 const read = async (params, credentials, signal) => {  //usuario por ID.Es una ruta protegida, además de pasar el ID de
     try {                                              //usuario como parámetro, el componente solicitante también debe proporcionar credenciales validas JWT valido
-        let response = await fetch ('/api/users/' + params.userId, {
+        let response = await fetch('/api/users/' + params.userId, {
             method: 'GET',
             signal: signal,
             headers: {
@@ -45,7 +45,7 @@ const read = async (params, credentials, signal) => {  //usuario por ID.Es una r
 
 const update = async (params, credentials, user) => {  //toma datos del usuario modificados del componente de vista p un usuario en especif,
     try {                                              //usa fetch para un PUT y actializa, en el back requ JSON ruta protegida
-        let response = await fetch ('/api/users/' + params.userId, {
+        let response = await fetch('/api/users/' + params.userId, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
