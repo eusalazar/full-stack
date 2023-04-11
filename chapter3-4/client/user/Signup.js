@@ -7,12 +7,12 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Icon from '@material-ui/core/Icon'
 import { makeStyles } from '@material-ui/core/styles'
-import {create} from './api-user.js'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import {create} from './api-user.js'
 import {Link} from 'react-router-dom'
 
 
@@ -53,12 +53,15 @@ export default function Signup() {
         error: ''
     })
     
-    const handleChange = name => event => {                 //fn controladora que es llamada cuando cdo los valores de entrada cambien y se haga click en el boton enviar
+    // fn controladora que es llamada cuando cdo los valores de entrada cambien y se haga click en el boton enviar
+    const handleChange = name => event => {                 
         setValues({ ...values, [name]: event.target.value })
     }
 
-    const clickSubmit = () => {  // se llama cuando envian en formulario,toma la entrada de valores del estado y llama 
-        const user = {            //al metodo create  fetch para registrar el usuario con el back
+    // se llama cuando envian en formulario,toma la entrada de valores del estado y llama 
+    // al metodo create  fetch para registrar el usuario con el back
+    const clickSubmit = () => {  
+        const user = {            
             name: values.name || undefined,
             email: values.email || undefined,
             password: values.password || undefined,

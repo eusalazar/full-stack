@@ -29,8 +29,9 @@ export default function Users() {
     const classes = useStyles()
     const [users, setUsers] = useState([])
 
+    // nos permite cancelar llamadas DOM segun sea necesario
     useEffect(() => {
-        const abortController = new AbortController() //nos permite cancelar llamadas DOM segun sea necesario
+        const abortController = new AbortController() 
         const signal = abortController.signal
         
         list(signal).then((data) => {

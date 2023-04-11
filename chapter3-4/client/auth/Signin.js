@@ -37,14 +37,16 @@ const useStyles = makeStyles(theme => ({
     }
     }))
 
-export default function Signin(props) {  //inicio de sesion
+// inicio de sesion se conf a true cdo el usuario inicia sesion con exito desp de enviar el formulario y el JWT
+// llamaremos al metodo authenticate() de helper,esta implemnetacion ira en clickSubmit()
+export default function Signin(props) {  
     const classes = useStyles()
     const [values, setValues] = useState({
         email: '',
         password: '',
         error: '',
-        redirectToReferrer: false  // se conf a true cdo el usuario inicia sesion con exito desp de enviar el formulario y el JWT
-    })                              //llamaremos al metodo authenticate() de helper,esta implemnetacion ira en clickSubmit()
+        redirectToReferrer: false  
+    })                             
 
     const clickSubmit = () => {
         const user = {
@@ -61,21 +63,23 @@ export default function Signin(props) {  //inicio de sesion
             })
             }
         })
-        }
+        };
 
         const handleChange = name => event => {
             setValues({ ...values, [name]: event.target.value })
-        }
+        };
 
         const {from} = props.location.state || {
             from: {
                 pathname: '/'
             }
-        }
-        const {redirectToReferrer} = values   //este compon llevara a la ultima ubicacion que se recibio en las props o al home
+        };
+
+        // este componente llevara a la ultima ubicacion que se recibio en las props o al home
+        const {redirectToReferrer} = values   
         if (redirectToReferrer) {
             return (<Redirect to={from}/>)
-        }
+        };
 
         return (
             <Card className={classes.card}>

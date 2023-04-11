@@ -10,10 +10,10 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import auth from './../auth/auth-helper'
 import {remove} from './api-user.js'
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 
 export default function DeleteUser(props) {  //en las props recibe el userId del comp PERFIL 
-    const [open, setOpen] = useState()
+    const [open, setOpen] = useState(false)
     const [redirect, setRedirect] = useState(false) //evita q se renderice primero
 
     const jwt = auth.isAuthenticated()
@@ -34,7 +34,7 @@ export default function DeleteUser(props) {  //en las props recibe el userId del
                 setRedirect(true)
             }
         })
-    }
+    };
     
     //para cancelar la elimin
     const handleRequestClose = () => { 
@@ -67,9 +67,8 @@ export default function DeleteUser(props) {  //en las props recibe el userId del
                 </Button>
             </DialogActions>
         </Dialog>
-    </span>
-    )
-}
+    </span>)
+};
 DeleteUser.propTypes = {
     userId: PropTypes.string.isRequired
 }

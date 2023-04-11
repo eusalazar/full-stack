@@ -8,13 +8,14 @@ const create = async (user) => {
             },
             body: JSON.stringify(user)
         })
-        return await response.json(user)
+        return await response.json()
     } catch(err) {
         console.log(err)
     }
 };
 
-const list = async (signal) => {   //recupera todos los usuarios de la BD
+// recupera todos los usuarios de la BD
+const list = async (signal) => {   
     try {
         let response = await fetch('/api/users/', {
             method: 'GET',
@@ -26,11 +27,12 @@ const list = async (signal) => {   //recupera todos los usuarios de la BD
     }
 };
 
-const read = async (params, credentials, signal) => {  //usuario por ID.Es una ruta protegida, además de pasar el ID de
-    try {                                              //usuario como parámetro, el componente solicitante también debe proporcionar credenciales validas JWT valido
+// usuario por ID.Es una ruta protegida, además de pasar el ID de
+// usuario como parámetro, el componente solicitante también debe proporcionar credenciales validas JWT valido
+const read = async (params, credentials, signal) => {  
+    try {                                              
         let response = await fetch('/api/users/' + params.userId, {
             method: 'GET',
-            signal: signal,
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -43,16 +45,16 @@ const read = async (params, credentials, signal) => {  //usuario por ID.Es una r
     }
 };
 
-const update = async (params, credentials, user) => {  //toma datos del usuario modificados del componente de vista p un usuario en especif,
-    try {                                              //usa fetch para un PUT y actializa, en el back requ JSON ruta protegida
+// toma datos del usuario modificados del componente de vista p un usuario en especif, usa fetch para un PUT y actializa, en el back requ JSON ruta protegida
+const update = async (params, credentials, user) => {  
+    try {                                              
         let response = await fetch('/api/users/' + params.userId, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + credentials.t
             },
-            body: JSON.stringify(user)
+            body: user
         })
         return await response.json()
     } catch (err) {
@@ -76,4 +78,66 @@ const remove = async (params, credentials) => {
     }
 };
 
-export { create, list, read, update, remove }
+const follow = async(params, credentials, followId) => {
+    try {
+        let response = await fetch('/api/users/follow/', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + credentials.t
+            },
+            body: JSON.stringify({userId:params.userId, followId: followId})
+        })
+        return await response.json()
+    }catch(err) {
+        console.log(err)
+    }
+};
+
+const unfollow = async (params, credentials, unfollowId) => {
+    try {
+        let response = await fetch('/api/users/unfollow/', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + credentials.t
+            },
+            body: JSON.stringify({userId:params.userId, unfollowId:unfollowId})
+        })
+        return await response.json()
+    }catch(err) {
+        console.log(err)
+    }
+};
+
+// devuelve una serie de usuarios que no son seguidos x el usuario actual
+const findPeople = async (params, credentials, signal) => {
+    try {
+        let response = await fetch('/api/users/findpeople/' +
+        params.userId, {
+            method: 'GET',
+            signal: signal,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + credentials.t
+                }
+        })
+        return await response.json()
+    }catch(err) {
+        console.log(err)
+    }
+};
+
+
+
+export { create, 
+        list, 
+        read, 
+        update, 
+        remove, 
+        follow, 
+        unfollow, 
+        findPeople }
