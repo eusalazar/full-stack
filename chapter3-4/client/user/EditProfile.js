@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -6,8 +6,8 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Icon from '@material-ui/core/Icon'
-import Avatar from '@material-ui/core/Avatar'
-import FileUpload from '@material-ui/icons/AddPhotoAlternate'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
 import { makeStyles } from '@material-ui/core/styles'
 import auth from './../auth/auth-helper'
 import {read, update} from './api-user.js'
@@ -73,21 +73,24 @@ export default function EditProfile({ match }) {
     //FormD proporciona una forma de construir un conjunto de pares clave/valor que epresentan campos de formulario y sus valores
     //se puede enviar mediante fetch()o . XMLHttpRequest.send()
     const clickSubmit = () => {
-        let userData = new FormData()
-        values.name && userData.append('name', values.name)
-        values.email && userData.append('email', values.email)
-        values.passoword && userData.append('passoword', values.passoword)
-        values.about && userData.append('about', values.about)
-        values.photo && userData.append('photo', values.photo)
+        const jwt = auth.isAuthenticated()
+        const user = {
+            name: values.name || undefined,
+            email: values.email || undefined,
+            password: values.password || undefined,
+            educator: values.educator 
+        }
         update({
             userId: match.params.userId
         }, {
             t: jwt.token
-        }, userData).then((data) => {
+        }, user).then((data) => {
             if (data && data.error) {
                 setValues({...values, error: data.error})
             } else {
-                setValues({...values, 'redirectToProfile': true})
+                auth.updateUser((data) => {
+                setValues({...values, userId: data._id, redirectToProfile: true})
+            })
             }
         })
     }
@@ -96,12 +99,13 @@ export default function EditProfile({ match }) {
         const value = name === 'photo'
         ? event.target.files[0]
         : event.target.value
-        setValues({...values, [name]: event.target.value})
+        setValues({...values, [name]:value})
     }
 
-    const photoUrl = values.id
-                    ? `/api/users/photo/${values.id}?${new Date().getTime()}`
-                    : '/api/users/defaultphoto'
+    // recibe el valor booleano para indicar si el interruptor se ha seleccionado o no, este valor se establece en el educador
+    const handleCheck = (event, checked) => {
+        setValues({...values, 'educator': checked})
+    }
 
     if (values.redirectToProfile) {     // si la solicitud es exitosa redirecciona  al perfil actualizado
         return (<Redirect to={'/user/' + values.userId}/>)
@@ -113,17 +117,23 @@ export default function EditProfile({ match }) {
                 <Typography variant="h6" className={classes.title}>
                 Edit Profile
                 </Typography>
-                <Avatar src={photoUrl} className={classes.bigAvatar}/><br/>
-                <input accept="image/*" onChange={handleChange('photo')} className={classes.input} id="icon-button-file" type="file" />
-                <label>
-                    <Button>
-                        Upload
-                        <FileUpload/>
-                    </Button>
-                </label>
-                <span className={classes.filename}>{values.photo ? values.photo.name : ''}</span><br/>
+                <TextField id="name" label="Name" className={classes.textField} value={values.name} onChange={handleChange('name')} margin="normal"/><br/>
                 <TextField id="email" type="email" label="Email" className={classes.textField} value={values.email} onChange={handleChange('email')} margin="normal"/><br/>
-                <TextField id="password" type="password" label="Password" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal"/>
+                <TextField id="password" type="password" label="Password" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal"/><br/>
+                <Typography variant="subtitle1" className={classes.subheading}>
+                    I am an Educator
+                </Typography>
+                <FormControlLabel
+                    control={
+                    <Switch classes={{
+                                        checked: classes.checked,
+                                        bar: classes.bar,
+                                    }}
+                            checked={values.educator}
+                            onChange={handleCheck}
+                    />}
+                    label={values.educator? 'Yes' : 'No'}
+                />
                 <br/>{
                     values.error && (<Typography component="p" color="error">
                         <Icon color="error" className={classes.error}>error</Icon>
