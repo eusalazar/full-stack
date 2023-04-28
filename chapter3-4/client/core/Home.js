@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
         useEffect(() => {
             const abortController = new AbortController()
             const signal = abortController.signal
-            listCompleted({t: jwt.token}, signal).then((data) => {
+            listEnrolled({t: jwt.token}, signal).then((data) => {
                 if (data.error) {
                     console.log(data.error)
                 } else {
@@ -100,7 +100,7 @@ const useStyles = makeStyles(theme => ({
                 abortController.abort()
             }
         }, [])
-
+        
         return (<div className={classes.extraTop}> 
             {auth.isAuthenticated().user && (
             <Card className={`${classes.card} ${classes.enrolledCard}`}>

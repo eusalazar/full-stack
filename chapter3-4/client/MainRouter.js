@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Switch, Link} from 'react-router-dom'
 import Users from './user/Users';
-import Home from './core/Menu'; 
+import Home from './core/Home'; 
 import Signup from './user/Signup';
 import Signin from './auth/Signin';
 import Profile from './user/Profile';
@@ -12,7 +12,7 @@ import NewCourse from './course/NewCourse';
 import MyCourses  from './course/MyCourses';
 import EditCourse from './course/EditCourse';
 import Course from './course/Course';
-
+import Enrollment from './enrollment/Enrollment'
 
 const MainRouter = () => {
     return (
@@ -31,6 +31,7 @@ const MainRouter = () => {
                     <PrivateRoute path="/teach/course/new" component={NewCourse}/>
                     <PrivateRoute path="/teach/course/edit/:courseId" component={EditCourse}/>
                     <PrivateRoute path="/teach/courses" component={MyCourses}/>
+                    <PrivateRoute path="/learn/:enrollmentId" component={Enrollment}/>
 
             </Switch>   
         </div>

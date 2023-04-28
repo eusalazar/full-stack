@@ -24,9 +24,9 @@ export default function DeleteUser(props) {  //en las props recibe el userId del
 
 //tiene acceso al id xq lo pasamos com props desde Profil, llamamos al metodo remove fetch junto con JWJ desp de confirmar la eliminacion
     const deleteAccount = () => { 
-        remove({
-            userId: props.userId
-        }, {t: jwt.token}).then((data) => {
+        const params = { userId: props.userId };
+        const crendetials = {t: jwt.token}
+        remove(params, crendetials).then((data) => {
             if (data && data.error) {
                 console.log(data.error)
             } else {

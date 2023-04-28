@@ -4,10 +4,10 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import HomeIcon from '@material-ui/icons/Home'
+import Library from '@material-ui/icons/LocalLibrary'
 import Button from '@material-ui/core/Button'
-import auth from '../auth/auth-helper'
+import auth from './../auth/auth-helper'
 import {Link, withRouter} from 'react-router-dom'
-
 
 const isActive = (history, path) => {
     if (history.location.pathname == path)
@@ -50,11 +50,13 @@ const Menu = withRouter(({history}) => (
                 </span>)
             }
             {
-                auth.isAuthenticated() && (<span>
-                    {auth.isAuthenticated().user.educator && (<Link to="/teach/courses"><Button style={isPartActive(history, "/teach/")}><Library/> Teach</Button></Link>)}
+                auth.isAuthenticated() &&  (<span>
+                    {auth.isAuthenticated().user && auth.isAuthenticated().user.educator && (<Link to="/teach/courses"><Button style={isPartActive(history, "/teach/")}><Library/> Teach</Button></Link>)}
                     <Link to={"/user/" + auth.isAuthenticated().user._id}>
-                        <Button style={isActive(history, "/user/" + auth.isAuthenticated().user._id)}>My Profile</Button>
+                    <Button style={isActive(history, "/user/" + auth.isAuthenticated().user._id)}>My Profile</Button>
                     </Link>
+                    
+                    
                     <Button color="inherit" onClick={() => {
                         auth.clearJWT(() => history.push('/'))
                     }}>Sign out</Button>

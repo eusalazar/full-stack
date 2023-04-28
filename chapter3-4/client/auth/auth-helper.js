@@ -4,13 +4,13 @@ const auth = {
 
     // En nuestros componentes frontend, necesitaremos recuperar las credenciales almacenadas para verificar si el usuario actual ha iniciado sesión
     isAuthenticated() {   
-    if (typeof window == "undefined")  
-    return false
+        if (typeof window == "undefined")  
+            return false
 
-    if (sessionStorage.getItem('jwt'))
-    return JSON.parse(sessionStorage.getItem('jwt'))
-    else
-        return false
+        if (sessionStorage.getItem('jwt'))
+            return JSON.parse(sessionStorage.getItem('jwt'))
+        else
+            return false
 },
 // iniciar sesion
 authenticate(jwt, cb) {   

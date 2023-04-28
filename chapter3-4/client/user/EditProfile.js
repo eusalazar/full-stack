@@ -47,7 +47,8 @@ export default function EditProfile({ match }) {
         email: '',
         open: false,
         error: '',
-        redirectToProfile: false
+        redirectToProfile: false,
+        educator: false
     })
     const jwt = auth.isAuthenticated()
 
@@ -61,7 +62,7 @@ export default function EditProfile({ match }) {
             if (data && data.error) {
                 setValues({...values, error: data.error})
             } else {
-                setValues({...values, id: data._id, name: data.name, email: data.email, about: data.about})
+                setValues({...values, name: data.name, email: data.email, educator: data.educator})
             }
         })
         return function cleanup(){
@@ -73,7 +74,6 @@ export default function EditProfile({ match }) {
     //FormD proporciona una forma de construir un conjunto de pares clave/valor que epresentan campos de formulario y sus valores
     //se puede enviar mediante fetch()o . XMLHttpRequest.send()
     const clickSubmit = () => {
-        const jwt = auth.isAuthenticated()
         const user = {
             name: values.name || undefined,
             email: values.email || undefined,
@@ -88,23 +88,20 @@ export default function EditProfile({ match }) {
             if (data && data.error) {
                 setValues({...values, error: data.error})
             } else {
-                auth.updateUser((data) => {
-                setValues({...values, userId: data._id, redirectToProfile: true})
+                auth.updateUser(data, ()=>{
+                    setValues({...values, userId: data._id, redirectToProfile: true})
+                })
+                }
             })
-            }
-        })
     }
     
     const handleChange = name => event => {
-        const value = name === 'photo'
-        ? event.target.files[0]
-        : event.target.value
-        setValues({...values, [name]:value})
+        setValues({...values, [name]: event.target.value})
     }
 
     // recibe el valor booleano para indicar si el interruptor se ha seleccionado o no, este valor se establece en el educador
     const handleCheck = (event, checked) => {
-        setValues({...values, 'educator': checked})
+        setValues({...values, educator : checked})
     }
 
     if (values.redirectToProfile) {     // si la solicitud es exitosa redirecciona  al perfil actualizado
