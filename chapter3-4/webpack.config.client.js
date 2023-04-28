@@ -26,7 +26,7 @@ const config = {
             },
             {
                 test: /\.(ttf|eot|svg|gif|jpg|png)(\?[\s\S]+)?$/,
-                use: 'file-loader'
+                use: 'file-loader'                                //los archivos de la carpeta dist debem ser incluidos para ser compilados con el resto del codigo
             }
         ]
     },
@@ -36,9 +36,10 @@ const config = {
     ],
     resolve: {
         alias: {
-          'react-dom': '@hot-loader/react-dom'
+            'react-dom': '@hot-loader/react-dom'
         }
     }
+
 }
 
 module.exports = config

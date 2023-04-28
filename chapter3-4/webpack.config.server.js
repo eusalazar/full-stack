@@ -22,7 +22,7 @@ const config = {
             },
             {
                 test: /\.(ttf|eot|svg|gif|jpg|png)(\?[\s\S]+)?$/,
-                use: 'file-loader'
+                use: 'file-loader'          //los archivos de la carpeta dist debem ser incluidos para ser compilados con el resto del codigo
             }
         ]
     }
